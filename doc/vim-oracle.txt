@@ -1,0 +1,169 @@
+*vim-oracle.txt*    AI-powered code assistance plugin for Vim
+
+Author: vim-oracle
+Version: 1.0.0
+
+==============================================================================
+CONTENTS                                                    *vim-oracle-contents*
+
+1. Introduction ............................ |vim-oracle-introduction|
+2. Installation ............................ |vim-oracle-installation|
+3. Configuration ........................... |vim-oracle-configuration|
+4. Commands ................................ |vim-oracle-commands|
+5. Mappings ................................ |vim-oracle-mappings|
+6. Examples ................................ |vim-oracle-examples|
+
+==============================================================================
+1. INTRODUCTION                                         *vim-oracle-introduction*
+
+vim-oracle is a Vim plugin that provides AI-powered code assistance by
+integrating with external AI tools. It allows you to send prompts to an AI
+tool directly from Vim, with context about your current file and line number.
+
+==============================================================================
+2. INSTALLATION                                         *vim-oracle-installation*
+
+Using vim-plug: >
+    Plug 'your-username/vim-oracle'
+<
+
+Using Vundle: >
+    Plugin 'your-username/vim-oracle'
+<
+
+Using Pathogen: >
+    git clone https://github.com/your-username/vim-oracle ~/.vim/bundle/vim-oracle
+<
+
+==============================================================================
+3. CONFIGURATION                                       *vim-oracle-configuration*
+
+                                                          *g:vim_oracle_command*
+g:vim_oracle_command~
+    Default: 'codex'
+    
+    The command used to invoke the AI tool. This should be the full command
+    including any arguments you want to pass to the AI tool.
+    
+    Example: >
+        let g:vim_oracle_command = 'codex --model gpt-4.1'
+<
+
+                                                    *g:vim_oracle_default_prompt*
+g:vim_oracle_default_prompt~
+    Default: 'I am working in the file {filename} at line {line}. '
+    
+    The default prompt template used for all filetypes. Supports the following
+    placeholders:
+    - {filename} - Current file name
+    - {line} - Current line number
+    - {filetype} - Current file type
+    
+    Example: >
+        let g:vim_oracle_default_prompt = 'File: {filename} Line: {line} Type: {filetype}. '
+<
+
+                                                 *g:vim_oracle_filetype_prompts*
+g:vim_oracle_filetype_prompts~
+    Default: {}
+    
+    A dictionary mapping filetypes to specific prompt templates. If a filetype
+    is not found in this dictionary, the default prompt will be used.
+    
+    Example: >
+        let g:vim_oracle_filetype_prompts = {
+        \ 'python': 'I am working on Python code in {filename} at line {line}. ',
+        \ 'javascript': 'I am working on JavaScript in {filename} at line {line}. ',
+        \ 'vim': 'I need help with this Vim script in {filename} at line {line}. '
+        \ }
+<
+
+                                                      *g:vim_oracle_no_mappings*
+g:vim_oracle_no_mappings~
+    Default: 0
+    
+    Set to 1 to disable the default key mapping (<Leader>ai).
+    
+    Example: >
+        let g:vim_oracle_no_mappings = 1
+<
+
+                                                  *g:vim_oracle_window_position*
+g:vim_oracle_window_position~
+    Default: 'below'
+    
+    Controls where the AI terminal window appears. Available options:
+    - 'below' - Opens terminal below current window
+    - 'above' - Opens terminal above current window  
+    - 'right' - Opens terminal to the right (vertical split)
+    - 'left' - Opens terminal to the left (vertical split)
+    - 'tab' - Opens terminal in a new tab
+    - 'floating' - Opens floating terminal (Neovim only)
+    
+    Example: >
+        let g:vim_oracle_window_position = 'right'
+        let g:vim_oracle_window_position = 'floating'
+<
+
+==============================================================================
+4. COMMANDS                                                 *vim-oracle-commands*
+
+                                                                     *:VimOracle*
+:VimOracle
+    Opens a prompt asking for AI input. The prompt will be prefilled with
+    context about the current file and line number based on your configuration.
+
+                                                               *:VimOraclePrompt*
+:VimOraclePrompt {text}
+    Directly sends a prompt to the AI tool. The {text} will be appended to
+    the context prompt for the current file and line.
+    
+    Example: >
+        :VimOraclePrompt Explain this function
+<
+
+==============================================================================
+5. MAPPINGS                                                 *vim-oracle-mappings*
+
+<Leader>ai                                                        *<Leader>ai*
+    Normal mode mapping that calls |:VimOracle|. This mapping can be disabled
+    by setting |g:vim_oracle_no_mappings| to 1.
+
+==============================================================================
+6. EXAMPLES                                                 *vim-oracle-examples*
+
+Basic configuration: >
+    let g:vim_oracle_command = 'chatgpt'
+    let g:vim_oracle_default_prompt = 'I am coding in {filename} at line {line}. '
+<
+
+Advanced configuration with filetype-specific prompts: >
+    let g:vim_oracle_command = 'codex --model gpt-4.1'
+    let g:vim_oracle_default_prompt = 'File: {filename}, Line: {line}. '
+    let g:vim_oracle_filetype_prompts = {
+    \ 'python': 'I am working on Python code in {filename} at line {line}. Please help with: ',
+    \ 'javascript': 'I am working on JavaScript in {filename} at line {line}. I need help with: ',
+    \ 'go': 'I am working on Go code in {filename} at line {line}. Question: ',
+    \ 'rust': 'I am working on Rust code in {filename} at line {line}. Please assist with: '
+    \ }
+<
+
+Disable default mappings and create custom ones: >
+    let g:vim_oracle_no_mappings = 1
+    nnoremap <Leader>ask :VimOracle<CR>
+    nnoremap <Leader>explain :VimOraclePrompt Explain this code<CR>
+<
+
+Window positioning examples: >
+    " Open AI terminal on the right side
+    let g:vim_oracle_window_position = 'right'
+    
+    " Open AI terminal in a floating window (Neovim only)
+    let g:vim_oracle_window_position = 'floating'
+    
+    " Open AI terminal in a new tab
+    let g:vim_oracle_window_position = 'tab'
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
