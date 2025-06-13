@@ -117,7 +117,8 @@ function! vim_oracle#invoke() abort
 endfunction
 
 " Open a small scratch buffer pre-populated with the default prompt
-function! vim_oracle#open_prompt_window(firstline, lastline, vismode) abort range
+" The range attribute must appear before abort for older Vim versions
+function! vim_oracle#open_prompt_window(firstline, lastline, vismode) range abort
   let l:prompt = ''
   if a:vismode !=# '' && line("'<") > 0 && line("'>") > 0
     let l:start = getpos("'<")
