@@ -132,7 +132,7 @@ function! vim_oracle#open_prompt_window() abort
   let b:vim_oracle_prompt_window = 1
   call setline(1, split(default_prompt, "\n"))
   normal! G$
-  startinsert
+  startinsert!
 endfunction
 
 " Send the contents of the current prompt buffer to the AI tool and close it
