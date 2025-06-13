@@ -143,7 +143,8 @@ function! vim_oracle#open_prompt_window() abort
   botright new
   resize 5
   setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
-  setlocal filetype=vimoracleprompt
+  " Use :setfiletype so the FileType event triggers for user autocmds
+  execute 'setfiletype vimoracleprompt'
   let b:vim_oracle_prompt_window = 1
   call setline(1, split(l:prompt, "\n"))
   normal! G$
