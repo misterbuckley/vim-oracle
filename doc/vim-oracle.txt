@@ -117,17 +117,29 @@ g:vim_oracle_window_position~
 :VimOraclePrompt {text}
     Directly sends a prompt to the AI tool. The {text} will be appended to
     the context prompt for the current file and line.
-    
+
     Example: >
         :VimOraclePrompt Explain this function
 <
+
+                                                                *:VimOraclePromptWindow*
+:VimOraclePromptWindow
+    Opens a small buffer pre-populated with the default prompt for the current
+    filetype. Edit the text and use |:VimOracleSend| or <Leader>ai to send it.
+
+                                                                     *:VimOracleSend*
+:VimOracleSend
+    Sends the contents of the current prompt buffer to the AI tool and closes
+    the buffer. If executed outside a prompt buffer, it behaves like
+    |:VimOracle|.
 
 ==============================================================================
 5. MAPPINGS                                                 *vim-oracle-mappings*
 
 <Leader>ai                                                        *<Leader>ai*
     Normal mode mapping that calls |:VimOracle|. This mapping can be disabled
-    by setting |g:vim_oracle_no_mappings| to 1.
+    by setting |g:vim_oracle_no_mappings| to 1. When used inside a prompt
+    buffer it sends the prompt to the AI and closes the buffer.
 
 ==============================================================================
 6. EXAMPLES                                                 *vim-oracle-examples*

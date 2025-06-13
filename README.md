@@ -116,6 +116,9 @@ let g:vim_oracle_window_position = 'floating'
 ### Interactive Mode
 
 Use `<Leader>ai` (or `:VimOracle`) to open an interactive prompt. The prompt will be pre-filled with context about your current file and line number.
+You can also open a dedicated prompt window with `:VimOraclePromptWindow`. Edit
+the text in that window and press `<Leader>ai` or run `:VimOracleSend` to send
+it to the AI tool.
 
 ### Direct Commands
 
@@ -182,8 +185,10 @@ You can use these placeholders in your prompt templates:
 
 ## Commands
 
-- `:VimOracle` - Open interactive AI prompt
+- `:VimOracle` - Open interactive AI prompt or send current prompt window
 - `:VimOraclePrompt {text}` - Send direct prompt to AI tool
+- `:VimOraclePromptWindow` - Open a scratch buffer for editing a prompt
+- `:VimOracleSend` - Send the contents of the current prompt window
 
 ## Default Mappings
 

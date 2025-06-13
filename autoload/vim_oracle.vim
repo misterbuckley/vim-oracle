@@ -105,3 +105,42 @@ function! vim_oracle#open_floating_terminal(command) abort
   call termopen([&shell, &shellcmdflag, a:command])
   startinsert
 endfunction
+
+" Wrapper for <Leader>ai mapping. If called from a prompt window, send the
+" buffer contents instead of opening a new command-line prompt.
+function! vim_oracle#invoke() abort
+  if exists('b:vim_oracle_prompt_window')
+    call vim_oracle#send_prompt_buffer()
+  else
+    call vim_oracle#prompt()
+  endif
+endfunction
+
+" Open a small scratch buffer pre-populated with the default prompt
+function! vim_oracle#open_prompt_window() abort
+  let filename = expand('%')
+  let linenum = line('.')
+  let filetype = &filetype
+
+  let template = vim_oracle#get_prompt_template(filetype)
+  let default_prompt = vim_oracle#format_prompt(template, filename, linenum)
+
+  botright new
+  resize 5
+  setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
+  let b:vim_oracle_prompt_window = 1
+  call setline(1, default_prompt)
+  normal! G
+endfunction
+
+" Send the contents of the current prompt buffer to the AI tool and close it
+function! vim_oracle#send_prompt_buffer() abort
+  if !exists('b:vim_oracle_prompt_window')
+    call vim_oracle#prompt()
+    return
+  endif
+
+  let l:prompt = join(getline(1, '$'), "\n")
+  bwipeout!
+  call vim_oracle#execute_command(l:prompt)
+endfunction
