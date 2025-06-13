@@ -113,11 +113,12 @@ let g:vim_oracle_window_position = 'floating'
 Run `:VimOracle` (or your mapping) to open an interactive prompt. The prompt will be pre-filled with context about your current file and line number.
 You can also open a dedicated prompt window with `:VimOraclePromptWindow`.
 This command accepts a range, so running it from Visual mode inserts the
-selected text into the prompt window. Otherwise, the window is populated with
-the default prompt for the current filetype. Edit the text and use
-`:VimOracleSend` (or your mapping) to send it to the AI tool. The prompt window
-uses the `vimoracleprompt` filetype so you can define autocmds or mappings
-specific to it.
+selected text into the prompt window. The cursor is placed on a new blank line
+below the inserted text so you can continue typing. Otherwise, the window is
+populated with the default prompt for the current filetype. Edit the text and
+use `:VimOracleSend` (or your mapping) to send it to the AI tool. The prompt
+window uses the `vimoracleprompt` filetype so you can define autocmds or
+mappings specific to it.
 
 ### Direct Commands
 
@@ -187,7 +188,8 @@ You can use these placeholders in your prompt templates:
 - `:VimOraclePrompt {text}` - Send direct prompt to AI tool
 - `:VimOraclePromptWindow` - Open a scratch buffer for editing a prompt. The
   command accepts a range, so running it from Visual mode pre-fills the window
-  with the selected text instead of the default prompt
+  with the selected text and places the cursor on a new line below it instead of
+  the default prompt
 - `:VimOracleSend` - Send the contents of the current prompt window
 
 ## Help

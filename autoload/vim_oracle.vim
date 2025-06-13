@@ -117,20 +117,30 @@ function! vim_oracle#invoke() abort
 endfunction
 
 " Open a small scratch buffer pre-populated with the default prompt
-function! vim_oracle#open_prompt_window() abort
+" a:firstline and a:lastline hold the range passed from the command
+function! vim_oracle#open_prompt_window(firstline, lastline) abort range
   let l:prompt = ''
-  let l:current_mode = mode()
-  if (l:current_mode ==# 'v' || l:current_mode ==# 'V' || l:current_mode ==# "\<C-v>") && line("'<") > 0 && line("'>") > 0
+
+  " If a range was given, use those lines for the prompt. When the command is
+  " executed from Visual mode the '< and '> marks include the exact column
+  " positions so we can copy only the selected text.
+  if a:firstline !=# a:lastline || a:firstline !=# line('.') || line("'<") > 0
     let l:start = getpos("'<")
     let l:end = getpos("'>")
-    let l:lines = getline(l:start[1], l:end[1])
-    if len(l:lines) == 1
-      let l:lines[0] = l:lines[0][l:start[2]-1:l:end[2]-1]
+
+    if l:start[1] == 0 || l:end[1] == 0
+      " No valid visual marks; fall back to the provided range
+      let l:prompt = join(getline(a:firstline, a:lastline), "\n")
     else
-      let l:lines[0] = l:lines[0][l:start[2]-1:]
-      let l:lines[-1] = l:lines[-1][:l:end[2]-1]
+      let l:lines = getline(l:start[1], l:end[1])
+      if len(l:lines) == 1
+        let l:lines[0] = l:lines[0][l:start[2]-1 : l:end[2]-1]
+      else
+        let l:lines[0] = l:lines[0][l:start[2]-1 :]
+        let l:lines[-1] = l:lines[-1][: l:end[2]-1]
+      endif
+      let l:prompt = join(l:lines, "\n")
     endif
-    let l:prompt = join(l:lines, "\n")
   endif
 
   if empty(l:prompt)
@@ -147,8 +157,9 @@ function! vim_oracle#open_prompt_window() abort
   setlocal filetype=vimoracleprompt
   let b:vim_oracle_prompt_window = 1
   call setline(1, split(l:prompt, "\n"))
-  normal! G$
-  startinsert!
+  call append(line('$'), '')
+  normal! G
+  startinsert
 endfunction
 
 " Send the contents of the current prompt buffer to the AI tool and close it
