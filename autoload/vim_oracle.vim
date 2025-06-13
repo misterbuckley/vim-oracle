@@ -118,19 +118,34 @@ endfunction
 
 " Open a small scratch buffer pre-populated with the default prompt
 function! vim_oracle#open_prompt_window() abort
-  let filename = expand('%')
-  let linenum = line('.')
-  let filetype = &filetype
+  let l:prompt = ''
+  if line("'<") > 0 && line("'>") > 0
+    let l:start = getpos("'<")
+    let l:end = getpos("'>")
+    let l:lines = getline(l:start[1], l:end[1])
+    if len(l:lines) == 1
+      let l:lines[0] = l:lines[0][l:start[2]-1:l:end[2]-1]
+    else
+      let l:lines[0] = l:lines[0][l:start[2]-1:]
+      let l:lines[-1] = l:lines[-1][:l:end[2]-1]
+    endif
+    let l:prompt = join(l:lines, "\n")
+  endif
 
-  let template = vim_oracle#get_prompt_template(filetype)
-  let default_prompt = vim_oracle#format_prompt(template, filename, linenum)
+  if empty(l:prompt)
+    let l:filename = expand('%')
+    let l:linenum = line('.')
+    let l:filetype = &filetype
+    let l:template = vim_oracle#get_prompt_template(l:filetype)
+    let l:prompt = vim_oracle#format_prompt(l:template, l:filename, l:linenum)
+  endif
 
   botright new
   resize 5
   setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
   setlocal filetype=vimoracleprompt
   let b:vim_oracle_prompt_window = 1
-  call setline(1, split(default_prompt, "\n"))
+  call setline(1, split(l:prompt, "\n"))
   normal! G$
   startinsert!
 endfunction
