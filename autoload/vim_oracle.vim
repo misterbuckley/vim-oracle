@@ -118,19 +118,23 @@ endfunction
 
 " Open a small scratch buffer pre-populated with either the default prompt
 " or the user's visual selection when invoked from Visual mode
-function! vim_oracle#open_prompt_window(vismode) abort
+function! vim_oracle#open_prompt_window(firstline, lastline, vismode) range abort
   let l:prompt = ''
-  if a:vismode !=# '' && line("'<") > 0 && line("'>") > 0
-    let l:start = getpos("'<")
-    let l:end = getpos("'>")
-    let l:lines = getline(l:start[1], l:end[1])
-    if len(l:lines) == 1
-      let l:lines[0] = l:lines[0][l:start[2]-1:l:end[2]-1]
+  if a:vismode !=# '' && a:firstline > 0 && a:lastline > 0 && a:lastline >= a:firstline
+    if a:vismode ==# 'v' || a:vismode ==# "\<C-v>"
+      let l:start = getpos("'<")
+      let l:end = getpos("'>")
+      let l:lines = getline(l:start[1], l:end[1])
+      if len(l:lines) == 1
+        let l:lines[0] = l:lines[0][l:start[2]-1:l:end[2]-1]
+      else
+        let l:lines[0] = l:lines[0][l:start[2]-1:]
+        let l:lines[-1] = l:lines[-1][:l:end[2]-1]
+      endif
+      let l:prompt = join(l:lines, "\n")
     else
-      let l:lines[0] = l:lines[0][l:start[2]-1:]
-      let l:lines[-1] = l:lines[-1][:l:end[2]-1]
+      let l:prompt = join(getline(a:firstline, a:lastline), "\n")
     endif
-    let l:prompt = join(l:lines, "\n")
   endif
 
   if empty(l:prompt)
