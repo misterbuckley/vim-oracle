@@ -118,7 +118,7 @@ endfunction
 
 " Open a small scratch buffer pre-populated with either the default prompt
 " or the user's visual selection when invoked from Visual mode
-function! vim_oracle#open_prompt_window(firstline, lastline, vismode) range abort
+function! vim_oracle#open_prompt_window(vismode) range abort
   let l:prompt = ''
   if a:vismode !=# '' && a:firstline > 0 && a:lastline > 0 && a:lastline >= a:firstline
     if a:vismode ==# 'v' || a:vismode ==# "\<C-v>"
