@@ -27,6 +27,5 @@ command! -nargs=0 VimOracle call vim_oracle#invoke()
 command! -nargs=1 VimOraclePrompt call vim_oracle#prompt_with_text(<q-args>)
 " Accept a range so the command works from Visual mode and pass the range
 " to the function
-command! -range -nargs=0 VimOraclePromptWindow \
-        call vim_oracle#open_prompt_window(<line1>, <line2>)
+command! -range -nargs=0 VimOraclePromptWindow call vim_oracle#open_prompt_window(<line1>, <line2>)
 command! -nargs=0 VimOracleSend call vim_oracle#send_prompt_buffer()
