@@ -129,8 +129,9 @@ function! vim_oracle#open_prompt_window() abort
   resize 5
   setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
   let b:vim_oracle_prompt_window = 1
-  call setline(1, default_prompt)
-  normal! G
+  call setline(1, split(default_prompt, "\n"))
+  normal! G$
+  startinsert
 endfunction
 
 " Send the contents of the current prompt buffer to the AI tool and close it

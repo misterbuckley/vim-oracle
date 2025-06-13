@@ -78,15 +78,6 @@ g:vim_oracle_filetype_prompts~
         \ }
 <
 
-                                                      *g:vim_oracle_no_mappings*
-g:vim_oracle_no_mappings~
-    Default: 0
-    
-    Set to 1 to disable the default key mapping (<Leader>ai).
-    
-    Example: >
-        let g:vim_oracle_no_mappings = 1
-<
 
                                                   *g:vim_oracle_window_position*
 g:vim_oracle_window_position~
@@ -125,7 +116,8 @@ g:vim_oracle_window_position~
                                                                 *:VimOraclePromptWindow*
 :VimOraclePromptWindow
     Opens a small buffer pre-populated with the default prompt for the current
-    filetype. Edit the text and use |:VimOracleSend| or <Leader>ai to send it.
+    filetype. Edit the text and use |:VimOracleSend| (or your mapping) to send
+    it.
 
                                                                      *:VimOracleSend*
 :VimOracleSend
@@ -137,9 +129,8 @@ g:vim_oracle_window_position~
 5. MAPPINGS                                                 *vim-oracle-mappings*
 
 <Leader>ai                                                        *<Leader>ai*
-    Normal mode mapping that calls |:VimOracle|. This mapping can be disabled
-    by setting |g:vim_oracle_no_mappings| to 1. When used inside a prompt
-    buffer it sends the prompt to the AI and closes the buffer.
+    Example mapping you can define to call |:VimOracle|. When used inside a
+    prompt buffer it sends the prompt to the AI and closes the buffer.
 
 ==============================================================================
 6. EXAMPLES                                                 *vim-oracle-examples*
@@ -160,8 +151,7 @@ Advanced configuration with filetype-specific prompts: >
     \ }
 <
 
-Disable default mappings and create custom ones: >
-    let g:vim_oracle_no_mappings = 1
+Define your own mappings: >
     nnoremap <Leader>ask :VimOracle<CR>
     nnoremap <Leader>explain :VimOraclePrompt Explain this code<CR>
 <
