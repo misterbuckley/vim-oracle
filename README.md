@@ -48,7 +48,7 @@ git clone https://github.com/your-username/vim-oracle ~/.vim/bundle/vim-oracle
 
 1. Install the plugin using your preferred method
 2. Make sure you have an AI command-line tool installed (e.g., `codex`, `chatgpt`, etc.)
-3. Use `<Leader>ai` to open the AI prompt, or `:VimOracle`
+3. Run `:VimOracle` (or your custom mapping) to open the AI prompt
 
 ## Configuration
 
@@ -76,18 +76,13 @@ let g:vim_oracle_filetype_prompts = {
 \ 'vim': 'I need help with this Vim script in {filename} at line {line}. '
 \ }
 
-" Disable default key mapping if you want to create your own
-let g:vim_oracle_no_mappings = 1
 ```
 
 ### Custom Key Mappings
 
-If you disable the default mappings, you can create your own:
+Define your own mappings to trigger the plugin:
 
 ```vim
-let g:vim_oracle_no_mappings = 1
-
-" Custom mappings
 nnoremap <Leader>ask :VimOracle<CR>
 nnoremap <Leader>explain :VimOraclePrompt Explain this code<CR>
 nnoremap <Leader>fix :VimOraclePrompt How can I fix this?<CR>
@@ -115,7 +110,14 @@ let g:vim_oracle_window_position = 'floating'
 
 ### Interactive Mode
 
-Use `<Leader>ai` (or `:VimOracle`) to open an interactive prompt. The prompt will be pre-filled with context about your current file and line number.
+Run `:VimOracle` (or your mapping) to open an interactive prompt. The prompt will be pre-filled with context about your current file and line number.
+You can also open a dedicated prompt window with `:VimOraclePromptWindow`. If
+you run this command while text is visually selected, the selected text will be
+inserted into the prompt window. Otherwise, the window is populated with the
+default prompt for the current filetype. Edit the text and use
+`:VimOracleSend` (or your mapping) to send it to the AI tool. The prompt window
+uses the `vimoracleprompt` filetype so you can define autocmds or mappings
+specific to it.
 
 ### Direct Commands
 
@@ -167,7 +169,6 @@ let g:vim_oracle_filetype_prompts = {
 \ }
 
 " Custom key mappings
-let g:vim_oracle_no_mappings = 1
 nnoremap <Leader>ai :VimOracle<CR>
 nnoremap <Leader>explain :VimOraclePrompt Explain this code<CR>
 ```
@@ -182,12 +183,12 @@ You can use these placeholders in your prompt templates:
 
 ## Commands
 
-- `:VimOracle` - Open interactive AI prompt
+- `:VimOracle` - Open interactive AI prompt or send current prompt window
 - `:VimOraclePrompt {text}` - Send direct prompt to AI tool
-
-## Default Mappings
-
-- `<Leader>ai` - Open interactive AI prompt (can be disabled with `g:vim_oracle_no_mappings`)
+- `:VimOraclePromptWindow` - Open a scratch buffer for editing a prompt. If text
+  is visually selected when the command is run, that text pre-fills the window
+  instead of the default prompt
+- `:VimOracleSend` - Send the contents of the current prompt window
 
 ## Help
 

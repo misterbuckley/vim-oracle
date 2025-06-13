@@ -1,10 +1,11 @@
 :VimOracle	vim-oracle.txt	/*:VimOracle*
 :VimOraclePrompt	vim-oracle.txt	/*:VimOraclePrompt*
+:VimOraclePromptWindow	vim-oracle.txt	/*:VimOraclePromptWindow*
+:VimOracleSend	vim-oracle.txt	/*:VimOracleSend*
 <Leader>ai	vim-oracle.txt	/*<Leader>ai*
 g:vim_oracle_command	vim-oracle.txt	/*g:vim_oracle_command*
 g:vim_oracle_default_prompt	vim-oracle.txt	/*g:vim_oracle_default_prompt*
 g:vim_oracle_filetype_prompts	vim-oracle.txt	/*g:vim_oracle_filetype_prompts*
-g:vim_oracle_no_mappings	vim-oracle.txt	/*g:vim_oracle_no_mappings*
 g:vim_oracle_window_position	vim-oracle.txt	/*g:vim_oracle_window_position*
 vim-oracle-commands	vim-oracle.txt	/*vim-oracle-commands*
 vim-oracle-configuration	vim-oracle.txt	/*vim-oracle-configuration*
@@ -14,3 +15,4 @@ vim-oracle-installation	vim-oracle.txt	/*vim-oracle-installation*
 vim-oracle-introduction	vim-oracle.txt	/*vim-oracle-introduction*
 vim-oracle-mappings	vim-oracle.txt	/*vim-oracle-mappings*
 vim-oracle.txt	vim-oracle.txt	/*vim-oracle.txt*
+vimoracleprompt-filetype	vim-oracle.txt	/*vimoracleprompt-filetype*
