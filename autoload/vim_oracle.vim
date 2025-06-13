@@ -119,7 +119,7 @@ endfunction
 " Open a small scratch buffer pre-populated with the default prompt
 function! vim_oracle#open_prompt_window() abort
   let l:prompt = ''
-  if line("'<") > 0 && line("'>") > 0
+  if index(['v', 'V', "\<C-v>"], mode()) != -1
     let l:start = getpos("'<")
     let l:end = getpos("'>")
     let l:lines = getline(l:start[1], l:end[1])
@@ -146,7 +146,8 @@ function! vim_oracle#open_prompt_window() abort
   setlocal filetype=vimoracleprompt
   let b:vim_oracle_prompt_window = 1
   call setline(1, split(l:prompt, "\n"))
-  normal! G$
+  call append('$', '')
+  normal! G
   startinsert!
 endfunction
 

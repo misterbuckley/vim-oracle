@@ -112,7 +112,7 @@ let g:vim_oracle_window_position = 'floating'
 
 Run `:VimOracle` (or your mapping) to open an interactive prompt. The prompt will be pre-filled with context about your current file and line number.
 You can also open a dedicated prompt window with `:VimOraclePromptWindow`. If
-you run this command while text is visually selected, the selected text will be
+you run this command from Visual mode, the selected text will be
 inserted into the prompt window. Otherwise, the window is populated with the
 default prompt for the current filetype. Edit the text and use
 `:VimOracleSend` (or your mapping) to send it to the AI tool. The prompt window
