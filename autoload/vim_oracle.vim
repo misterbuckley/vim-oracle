@@ -119,7 +119,8 @@ endfunction
 " Open a small scratch buffer pre-populated with the default prompt
 function! vim_oracle#open_prompt_window() abort
   let l:prompt = ''
-  if line("'<") > 0 && line("'>") > 0
+  let l:current_mode = mode()
+  if (l:current_mode ==# 'v' || l:current_mode ==# 'V' || l:current_mode ==# "\<C-v>") && line("'<") > 0 && line("'>") > 0
     let l:start = getpos("'<")
     let l:end = getpos("'>")
     let l:lines = getline(l:start[1], l:end[1])
