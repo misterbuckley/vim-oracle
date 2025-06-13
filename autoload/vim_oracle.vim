@@ -68,9 +68,11 @@ function! vim_oracle#open_positioned_terminal(command) abort
   execute open_cmd
 
   if has('nvim')
-    call termopen(a:command)
+    " Use the configured shell to run {command} so that quoting with spaces or
+    " single quotes works consistently.
+    call termopen([&shell, &shellcmdflag, a:command])
   else
-    call term_start(a:command, {'curwin': 1})
+    call term_start([&shell, &shellcmdflag, a:command], {'curwin': 1})
   endif
   startinsert
 endfunction
@@ -98,6 +100,8 @@ function! vim_oracle#open_floating_terminal(command) abort
   
   let buf = nvim_create_buf(v:false, v:true)
   let win = nvim_open_win(buf, v:true, opts)
-  call termopen(a:command)
+  " Run the command through the user's shell so that prompts containing quotes
+  " or spaces are handled correctly.
+  call termopen([&shell, &shellcmdflag, a:command])
   startinsert
 endfunction
