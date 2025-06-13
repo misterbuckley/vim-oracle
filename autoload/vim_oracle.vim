@@ -119,17 +119,10 @@ endfunction
 " Open a small scratch buffer pre-populated with the default prompt
 function! vim_oracle#open_prompt_window() abort
   let l:prompt = ''
+  " If the user had text selected in visual mode, yank it and use it as the prompt.
   if line("'<") > 0 && line("'>") > 0
-    let l:start = getpos("'<")
-    let l:end = getpos("'>")
-    let l:lines = getline(l:start[1], l:end[1])
-    if len(l:lines) == 1
-      let l:lines[0] = l:lines[0][l:start[2]-1:l:end[2]-1]
-    else
-      let l:lines[0] = l:lines[0][l:start[2]-1:]
-      let l:lines[-1] = l:lines[-1][:l:end[2]-1]
-    endif
-    let l:prompt = join(l:lines, "\n")
+    silent! normal! `<v`>y
+    let l:prompt = getreg("\"")
   endif
 
   if empty(l:prompt)
