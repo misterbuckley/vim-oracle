@@ -117,13 +117,19 @@ g:vim_oracle_window_position~
 :VimOraclePromptWindow
     Opens a small buffer pre-populated with the default prompt for the current
     filetype. Edit the text and use |:VimOracleSend| (or your mapping) to send
-    it.
+    it. The buffer uses the |vimoracleprompt-filetype| filetype so you can set
+    autocmds or mappings specific to the prompt window.
 
                                                                      *:VimOracleSend*
 :VimOracleSend
     Sends the contents of the current prompt buffer to the AI tool and closes
     the buffer. If executed outside a prompt buffer, it behaves like
     |:VimOracle|.
+
+vimoracleprompt-filetype                              *vimoracleprompt-filetype*
+    Filetype used for the prompt window opened by |:VimOraclePromptWindow|.
+    Define autocmds or mappings for this filetype to customize the prompt
+    buffer.
 
 ==============================================================================
 5. MAPPINGS                                                 *vim-oracle-mappings*
