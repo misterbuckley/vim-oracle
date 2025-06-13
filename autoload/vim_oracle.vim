@@ -53,16 +53,28 @@ function! vim_oracle#execute_command(prompt) abort
 endfunction
 
 function! vim_oracle#open_positioned_terminal(command) abort
+  " Map the configured window position to commands that open a new window
+  " before running the terminal command.  This avoids quoting problems when
+  " {command} contains single quotes.
   let position_map = {
-    \ 'below': 'botright',
-    \ 'above': 'topleft',
-    \ 'right': 'botright vertical',
-    \ 'left': 'topleft vertical',
-    \ 'tab': 'tabnew |'
-    \ }
-  
-  let position = get(position_map, g:vim_oracle_window_position, 'botright')
-  execute position . ' term ' . a:command
+        \ 'below': 'botright new',
+        \ 'above': 'topleft new',
+        \ 'right': 'botright vertical new',
+        \ 'left': 'topleft vertical new',
+        \ 'tab': 'tabnew'
+        \ }
+
+  let open_cmd = get(position_map, g:vim_oracle_window_position, 'botright new')
+  execute open_cmd
+
+  if has('nvim')
+    " Use the configured shell to run {command} so that quoting with spaces or
+    " single quotes works consistently.
+    call termopen([&shell, &shellcmdflag, a:command])
+  else
+    call term_start([&shell, &shellcmdflag, a:command], {'curwin': 1})
+  endif
+  startinsert
 endfunction
 
 function! vim_oracle#open_floating_terminal(command) abort
@@ -88,6 +100,8 @@ function! vim_oracle#open_floating_terminal(command) abort
   
   let buf = nvim_create_buf(v:false, v:true)
   let win = nvim_open_win(buf, v:true, opts)
-  call termopen(a:command)
+  " Run the command through the user's shell so that prompts containing quotes
+  " or spaces are handled correctly.
+  call termopen([&shell, &shellcmdflag, a:command])
   startinsert
 endfunction
