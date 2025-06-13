@@ -116,11 +116,12 @@ g:vim_oracle_window_position~
                                                                 *:VimOraclePromptWindow*
 :VimOraclePromptWindow
     Opens a small buffer for editing a prompt. If the command is executed from
-    Visual mode, the selected text is inserted into the window instead of the
-    default prompt. Otherwise the window is pre-populated with the default
-    prompt for the current filetype. Edit the text and use |:VimOracleSend| (or
-    your mapping) to send it. The buffer uses the |vimoracleprompt-filetype|
-    filetype so you can set autocmds or mappings specific to the prompt window.
+    Visual mode, the selected text is inserted into the window and the cursor is
+    left in Insert mode on a new blank line below it. Otherwise the window is
+    pre-populated with the default prompt for the current filetype. Edit the
+    text and use |:VimOracleSend| (or your mapping) to send it. The buffer uses
+    the |vimoracleprompt-filetype| filetype so you can set autocmds or mappings
+    specific to the prompt window.
 
                                                                      *:VimOracleSend*
 :VimOracleSend

@@ -26,5 +26,5 @@ endif
 command! -nargs=0 VimOracle call vim_oracle#invoke()
 command! -nargs=1 VimOraclePrompt call vim_oracle#prompt_with_text(<q-args>)
 command! -nargs=0 -range VimOraclePromptWindow \
-            call vim_oracle#open_prompt_window(<line1>, <line2>, visualmode())
+            call vim_oracle#open_prompt_window(visualmode())
 command! -nargs=0 VimOracleSend call vim_oracle#send_prompt_buffer()
