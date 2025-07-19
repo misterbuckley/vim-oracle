@@ -27,3 +27,10 @@ command! -nargs=0 VimOracle call vim_oracle#invoke()
 command! -nargs=1 VimOraclePrompt call vim_oracle#prompt_with_text(<q-args>)
 command! -range -nargs=0 VimOraclePromptWindow call vim_oracle#open_prompt_window()
 command! -nargs=0 VimOracleSend call vim_oracle#send_prompt_buffer()
+command! -nargs=? VimOracleOpenChat call vim_oracle#open_chat(<q-args>)
+
+" Auto-refresh chat buffers when switching tabs to ensure latest messages are visible
+augroup VimOracleChat
+  autocmd!
+  autocmd TabEnter * call vim_oracle#refresh_chat_on_tab_enter()
+augroup END
