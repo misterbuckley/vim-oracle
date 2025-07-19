@@ -19,18 +19,6 @@ function! vim_oracle#prompt() abort
   endif
 endfunction
 
-function! vim_oracle#prompt_with_text(text) abort
-  let filename = expand('%')
-  let linenum = line('.')
-  let filetype = &filetype
-  
-  let prompt_template = vim_oracle#get_prompt_template(filetype)
-  let default_prompt = vim_oracle#format_prompt(prompt_template, filename, linenum)
-  
-  let full_prompt = default_prompt . a:text
-  call vim_oracle#execute_command(full_prompt)
-endfunction
-
 function! vim_oracle#get_prompt_template(filetype) abort
   if has_key(g:vim_oracle_filetype_prompts, a:filetype)
     return g:vim_oracle_filetype_prompts[a:filetype]
@@ -111,55 +99,8 @@ function! vim_oracle#open_floating_terminal(command) abort
   startinsert
 endfunction
 
-" Wrapper for <Leader>ai mapping. If called from a prompt window, send the
-" buffer contents instead of opening a new command-line prompt.
-function! vim_oracle#invoke() abort
-  if exists('b:vim_oracle_prompt_window')
-    call vim_oracle#send_prompt_buffer()
-  else
-    call vim_oracle#prompt()
-  endif
-endfunction
 
-" Open a small scratch buffer pre-populated with the default prompt
-function! vim_oracle#open_prompt_window() abort
-  let l:filename = expand('%')
-  let l:linenum = line('.')
 
-  let l:prompt = ''
-  " If the user had text selected in visual mode, yank it and use it as the prompt.
-  if line("'<") > 0 && line("'>") > 0
-    silent! normal! `<v`>y
-    let l:prompt = 'The following code is from ' . l:filename . ' at line ' . l:linenum . ":\n\n" . getreg("\"") . "\n\n"
-  endif
-
-  if empty(l:prompt)
-    let l:filetype = &filetype
-    let l:template = vim_oracle#get_prompt_template(l:filetype)
-    let l:prompt = vim_oracle#format_prompt(l:template, l:filename, l:linenum)
-  endif
-
-  botright new
-  resize 10
-  setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
-  setlocal filetype=vimoracleprompt
-  let b:vim_oracle_prompt_window = 1
-  call setline(1, split(l:prompt, "\n"))
-  normal! G$
-  startinsert!
-endfunction
-
-" Send the contents of the current prompt buffer to the AI tool and close it
-function! vim_oracle#send_prompt_buffer() abort
-  if !exists('b:vim_oracle_prompt_window')
-    call vim_oracle#prompt()
-    return
-  endif
-
-  let l:prompt = join(getline(1, '$'), "\n")
-  bwipeout!
-  call vim_oracle#execute_command(l:prompt)
-endfunction
 
 " Open or switch to a chat window with AI
 function! vim_oracle#open_chat(...) abort
