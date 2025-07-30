@@ -99,12 +99,15 @@ function! vim_oracle#open_floating_terminal(command) abort
   startinsert
 endfunction
 
-
-
-
 " Open or switch to a chat window with AI
 function! vim_oracle#open_chat(...) abort
   let l:prompt = a:0 > 0 ? a:1 : ''
+  
+  " Check if we're in a prompt window and use its content
+  if exists('b:vim_oracle_prompt_window') && empty(l:prompt)
+    call vim_oracle#execute_prompt_from_window()
+    return
+  endif
   
   " If a prompt is provided, always create a new chat session
   if !empty(l:prompt)
@@ -274,4 +277,55 @@ function! vim_oracle#refresh_chat_on_tab_enter() abort
       " This function can be extended for future synchronization needs
     endif
   endif
+endfunction
+
+" Open a small prompt window for editing the default prompt
+function! vim_oracle#open_prompt_window() abort
+  " Create a small window at the bottom
+  botright 5new
+  
+  " Set buffer options for the prompt window
+  setlocal buftype=nofile
+  setlocal bufhidden=wipe
+  setlocal noswapfile
+  setlocal nowrap
+  setlocal filetype=vim_oracle_prompt
+  
+  " Mark this as a prompt window
+  let b:vim_oracle_prompt_window = 1
+  
+  " Get the current context for the prompt
+  let l:filename = expand('#')
+  let l:linenum = line('#')
+  let l:filetype = getbufvar(bufnr('#'), '&filetype')
+  
+  " Get the appropriate prompt template and format it
+  let l:prompt_template = vim_oracle#get_prompt_template(l:filetype)
+  let l:formatted_prompt = vim_oracle#format_prompt(l:prompt_template, l:filename, l:linenum)
+  
+  " Populate the window with the formatted prompt
+  call setline(1, l:formatted_prompt)
+  
+  " Set up key mappings for the prompt window
+  nnoremap <buffer> <CR> :call vim_oracle#execute_prompt_from_window()<CR>
+  inoremap <buffer> <CR> <Esc>:call vim_oracle#execute_prompt_from_window()<CR>
+  
+  " Start in insert mode at the end of the line
+  startinsert!
+endfunction
+
+" Execute the prompt from the prompt window
+function! vim_oracle#execute_prompt_from_window() abort
+  if !exists('b:vim_oracle_prompt_window')
+    return
+  endif
+  
+  " Get the content of the prompt window
+  let l:prompt = join(getline(1, '$'), ' ')
+  
+  " Close the prompt window
+  close
+  
+  " Open the chat with the prompt from the window
+  call vim_oracle#open_chat(l:prompt)
 endfunction
