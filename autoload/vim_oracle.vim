@@ -281,6 +281,11 @@ endfunction
 
 " Open a small prompt window for editing the default prompt
 function! vim_oracle#open_prompt_window() abort
+  " Get the current context for the prompt BEFORE creating new window
+  let l:filename = expand('%')
+  let l:linenum = line('.')
+  let l:filetype = &filetype
+  
   " Create a small window at the bottom
   botright 5new
   
@@ -293,11 +298,6 @@ function! vim_oracle#open_prompt_window() abort
   
   " Mark this as a prompt window
   let b:vim_oracle_prompt_window = 1
-  
-  " Get the current context for the prompt
-  let l:filename = expand('#')
-  let l:linenum = line('#')
-  let l:filetype = getbufvar(bufnr('#'), '&filetype')
   
   " Get the appropriate prompt template and format it
   let l:prompt_template = vim_oracle#get_prompt_template(l:filetype)
