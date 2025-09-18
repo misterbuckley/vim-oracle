@@ -58,13 +58,51 @@ The `:VimOraclePromptWindow` command opens a small, temporary window at the bott
 - Temporary buffer that doesn't create files
 - Enter key shortcut for quick execution
 - Integrates seamlessly with existing `:VimOracle` command
+- **NEW**: Prompt history functionality with Ctrl-P browser
+
+**Key Mappings:**
+- `<CR>` (Enter): Execute prompt and open chat
+- `<C-p>` (Ctrl-P): Open prompt history browser
 
 **Implementation Details:**
 - Command: `:VimOraclePromptWindow` → `vim_oracle#open_prompt_window()`
 - Window marked with `b:vim_oracle_prompt_window = 1`
 - Buffer type: `nofile`, `bufhidden=wipe`, no swapfile
 - Filetype: `vim_oracle_prompt`
-- Key mappings: `<CR>` in both normal and insert mode
+
+### VimOracle Prompt History
+
+The plugin now maintains a persistent history of all prompts sent to the AI. This history is accessible between vim sessions and provides a CtrlP-like interface for browsing and selecting previous prompts.
+
+**Features:**
+- **Persistent Storage**: Prompts are automatically saved to `~/.config/vim-oracle/prompt_history.txt` (Linux/Mac) or `$APPDATA/vim-oracle/prompt_history.txt` (Windows)
+- **Automatic History**: Every executed prompt is automatically added to history
+- **Duplicate Prevention**: Identical prompts are moved to the top rather than duplicated
+- **Size Limit**: History is limited to 100 entries to prevent excessive file size
+- **Cross-Session**: History persists between vim restarts
+
+**History Browser Interface:**
+1. From a VimOracle prompt window, press `<C-p>` (Ctrl-P) to open the history browser
+2. Use `<C-j>` and `<C-k>` to navigate through previous prompts
+3. As you navigate, the full prompt is automatically populated in the prompt window for preview
+4. Press `<CR>` (Enter) to select a prompt and return to edit mode
+5. Press `<Esc>` or `q` to close the history browser without selecting
+
+**Commands:**
+- `:VimOracleHistory` - Open history browser (only works from prompt window)
+
+**Key Mappings in History Browser:**
+- `<C-j>`: Move to next (newer) prompt
+- `<C-k>`: Move to previous (older) prompt  
+- `<CR>`: Select current prompt and return to edit mode
+- `<Esc>` or `q`: Close browser without selecting
+
+**Implementation Details:**
+- History file location: `~/.config/vim-oracle/prompt_history.txt`
+- Browser window: 10 lines, positioned at bottom
+- Buffer type: `nofile`, `bufhidden=wipe`, no swapfile
+- Filetype: `vim_oracle_history`
+- Real-time preview in prompt window as you navigate
 
 ## Development Guidelines
 

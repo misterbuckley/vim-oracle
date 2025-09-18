@@ -24,7 +24,9 @@ if !exists('g:vim_oracle_window_position')
 endif
 
 command! -nargs=? VimOracle call vim_oracle#open_chat(<q-args>)
-command! VimOraclePromptWindow call vim_oracle#open_prompt_window()
+command! -range VimOraclePromptWindow call vim_oracle#open_prompt_window(<line1>, <line2>)
+command! VimOraclePromptWindowSend call vim_oracle#send_prompt_from_window()
+command! VimOracleHistory call vim_oracle#open_history_browser()
 
 " Auto-refresh chat buffers when switching tabs to ensure latest messages are visible
 augroup VimOracleChat
