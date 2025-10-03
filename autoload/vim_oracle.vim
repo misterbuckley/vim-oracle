@@ -383,7 +383,7 @@ function! vim_oracle#open_prompt_window(...) abort
   setlocal buftype=nofile
   setlocal bufhidden=wipe
   setlocal noswapfile
-  setlocal nowrap
+  setlocal wrap
   setlocal filetype=vim_oracle_prompt
 
   " Mark this as a prompt window
