@@ -58,11 +58,9 @@ The `:VimOraclePromptWindow` command opens a small, temporary window at the bott
 - Temporary buffer that doesn't create files
 - Enter key shortcut for quick execution
 - Integrates seamlessly with existing `:VimOracle` command
-- **NEW**: Prompt history functionality with Ctrl-P browser
 
 **Key Mappings:**
 - `<CR>` (Enter): Execute prompt and open chat
-- `<C-p>` (Ctrl-P): Open prompt history browser
 
 **Implementation Details:**
 - Command: `:VimOraclePromptWindow` → `vim_oracle#open_prompt_window()`
@@ -82,7 +80,7 @@ The plugin now maintains a persistent history of all prompts sent to the AI. Thi
 - **Cross-Session**: History persists between vim restarts
 
 **History Browser Interface:**
-1. From a VimOracle prompt window, press `<C-p>` (Ctrl-P) to open the history browser
+1. From a VimOracle prompt window, run `:VimOracleHistory` to open the history browser
 2. Use `<C-j>` and `<C-k>` to navigate through previous prompts
 3. As you navigate, the full prompt is automatically populated in the prompt window for preview
 4. Press `<CR>` (Enter) to select a prompt and return to edit mode

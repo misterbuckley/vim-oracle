@@ -411,10 +411,6 @@ function! vim_oracle#open_prompt_window(...) abort
 
   " Set up key mappings for the prompt window (removed Enter mappings to allow normal newlines)
 
-  " Add history browser mapping - Ctrl-P for history (like CtrlP)
-  nnoremap <buffer> <C-p> :call vim_oracle#open_history_browser()<CR>
-  inoremap <buffer> <C-p> <Esc>:call vim_oracle#open_history_browser()<CR>
-
   " Start in insert mode at the appropriate position
   if !empty(l:selected_text)
     " Position cursor after the selected text on a new line
